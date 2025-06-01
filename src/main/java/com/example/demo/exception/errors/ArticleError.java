@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @Getter
 public enum ArticleError implements ErrorCode {
-    // TODO  添加文章异常
 //    异常描述	    错误码	触发场景
 
     // 文章不存在

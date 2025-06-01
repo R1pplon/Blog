@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 @Getter
 public enum CommentError implements ErrorCode {
-    // TODO 评论相关异常
 //    异常描述	    错误码	触发场景
 //    重复任务列表分类	    3001	创建重复分类的任务列表
 //    任务列表不存在	    3002	操作不存在任务列表
