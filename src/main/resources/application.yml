@@ -32,5 +32,5 @@ jwt:
 
 # 静态资源映射
 file:
-  upload-dir: ${user.home}/Pictures/toDoList
+  upload-dir: ${user.home}/Pictures/Bolg_BackEnd
   access-path: /images/**

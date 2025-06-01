@@ -1,7 +1,10 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.UpdateArticleRequest;
+import com.example.demo.dto.request.CreateArticleRequest;
 import com.example.demo.dto.response.ArticleListResponse;
 import com.example.demo.dto.response.ArticleResponse;
+import jakarta.validation.Valid;
 
 public interface ArticleService {
 
@@ -10,4 +13,10 @@ public interface ArticleService {
 
     //  获取文章列表
     ArticleListResponse getArticleList(Integer page, Integer size);
+
+    void createArticle(@Valid CreateArticleRequest createArticleRequest, Long userId);
+
+    void deleteArticleById(Long articleId);
+
+    void updateArticle(@Valid UpdateArticleRequest updateArticleRequest, Long articleId);
 }

@@ -10,4 +10,6 @@ import org.springframework.data.domain.Pageable;
 public interface ArticleRepository extends JpaRepository<Article, Long> {
     // 按创建时间倒序分页查询
     Page<Article> findAllByOrderByCreateTimeDesc(Pageable pageable);
+
+    Article findByTitle(String title);
 }

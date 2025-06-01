@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -11,7 +12,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "comments")
 public class Comment {
@@ -26,16 +29,18 @@ public class Comment {
     private LocalDateTime createTime;
 
     @Column(nullable = false)
-    private Integer status = 0;  // 默认待审核状态
+    private Integer status = 0;  // 默认待审核状态0, 审核通过状态1
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @ToString.Exclude
+    @JsonBackReference
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id", nullable = false)
     @ToString.Exclude
+    @JsonBackReference
     private Article article;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,6 +50,7 @@ public class Comment {
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
+    @JsonBackReference
     private List<Comment> replies;  // 子回复
 
     @Override

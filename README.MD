@@ -1,7 +1,5 @@
 # 项目
 
-## 后端
-
 ## 模型
 
 ### User
@@ -86,12 +84,12 @@ GET /api/public/article/{id}/comments # 获取文章评论
 # 用户信息
 GET /api/user/info                 # 获取当前用户信息
 PUT /api/user/info                 # 更新当前用户信息
+POST /api/user/avatar              # 上传用户头像
 
 # 评论操作
-POST /api/user/article/{id}/comment # 发表评论
-GET /api/user/comments              # 获取当前用户的评论
-PUT /api/user/comment/{id}          # 更新当前用户的评论
-DELETE /api/user/comment/{id}       # 删除当前用户的评论
+POST /api/comment/                  # 发表评论
+GET /api/comment/                   # 获取当前用户的所有评论
+DELETE /api/comment/{id}            # 根据id删除评论
 ```
 
 ### 管理员专用接口
@@ -110,10 +108,7 @@ DELETE /api/admin/user/{id}        # 删除用户
 
 # 评论管理
 GET /api/admin/comments            # 获取所有评论
-PUT /api/admin/comment/{id}        # 更新任意评论
-DELETE /api/admin/comment/{id}     # 删除任意评论
-GET /api/admin/comment/approve     # 获取待审核评论
-PUT /api/admin/comment/{id}/status # 审核评论状态
+DELETE /api/admin/comments/{id}     # 删除任意评论
+GET /api/admin/comments/approve     # 获取待审核评论
+PUT /api/admin/comments/{id}/status # 审核评论状态
 ```
-
-

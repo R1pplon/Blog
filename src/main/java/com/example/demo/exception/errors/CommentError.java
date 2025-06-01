@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum CommentError implements ErrorCode {
 //    异常描述	    错误码	触发场景
-//    重复任务列表分类	    3001	创建重复分类的任务列表
-//    任务列表不存在	    3002	操作不存在任务列表
+    // 评论不存在
+     COMMENT_NOT_EXIST(1001, "评论不存在", HttpStatus.NOT_FOUND),
     ;
 
     private final Integer code;

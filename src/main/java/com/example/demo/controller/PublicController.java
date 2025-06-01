@@ -63,7 +63,7 @@ public class PublicController {
                                            HttpServletResponse response) {
         UserResponse userResponse = userService.login(request);
         User user = userRepository.findByUsername(request.username());
-        String token = jwtUtils.generateToken(user.getId());
+        String token = jwtUtils.generateToken(user.getId(), user.getRole());
         CookieUtil.setCookie(response, token);
 
         return ApiResponse.success(userResponse);

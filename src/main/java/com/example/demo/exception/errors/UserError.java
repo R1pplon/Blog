@@ -23,6 +23,7 @@ public enum UserError  implements ErrorCode{
 //    用户不存在	      1005	    更新不存在的用户信息
     USER_NOT_EXIST(1005, "用户不存在", HttpStatus.NOT_FOUND),
 //    上传文件不存在     1006      文件为空
+PERMISSION_DENIED(1006, "用户权限拒绝", HttpStatus.BAD_REQUEST)
     ;
     private final Integer code;
     private final String message;

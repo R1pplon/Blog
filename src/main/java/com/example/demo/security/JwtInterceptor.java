@@ -33,6 +33,10 @@ public class JwtInterceptor implements HandlerInterceptor {
                     "/favicon.ico"
             ));
 
+    private final List<String> ADMIN_PATH = Arrays.asList(
+            "/api/admin/**"
+    );
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         if (request.getMethod().equals("OPTIONS")) {
@@ -41,6 +45,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         Cookie[] cookies = request.getCookies();
         String requestURI = request.getRequestURI();
+
         if (EXCLUDE_PATH.stream().anyMatch(pattern -> pathMatcher.match(pattern, requestURI))) {
             return true;
         }
@@ -48,18 +53,43 @@ public class JwtInterceptor implements HandlerInterceptor {
             throw new UserException(UserError.NO_COOKIE);
         }
 
-        List<Claims> res = new ArrayList<>();
+//        List<Claims> res = new ArrayList<>();
+//        for (Cookie cookie : cookies) {
+//            if (cookie.getName().equals("jwt_token")) {
+//                String token = cookie.getValue();
+//                Claims claim = jwtUtils.parseToken(token);
+//                res.add(claim);
+//            }
+//        }
+//        if (!res.isEmpty()) {
+//            Long userId = res.getFirst().get("userId", Long.class);
+//            request.setAttribute("userId", userId);
+//            return true;
+//        } else throw new UserException(UserError.NO_COOKIE);
+        Claims claim = null;
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("jwt_token")) {
                 String token = cookie.getValue();
-                Claims claim = jwtUtils.parseToken(token);
-                res.add(claim);
+                claim = jwtUtils.parseToken(token);
+                break;
             }
         }
-        if (!res.isEmpty()) {
-            Long userId = res.getFirst().get("userId", Long.class);
-            request.setAttribute("userId", userId);
-            return true;
-        } else throw new UserException(UserError.NO_COOKIE);
+        if (claim == null) {
+            throw new UserException(UserError.NO_COOKIE);
+        }
+
+        // 获取用户角色
+        Integer role = claim.get("role", Integer.class);
+        Long userId = claim.get("userId", Long.class);
+        request.setAttribute("userId", userId);
+
+        // 管理员路径检查
+        if (ADMIN_PATH.stream().anyMatch(pattern -> pathMatcher.match(pattern, requestURI))) {
+            if (role != 0) {
+                throw new UserException(UserError.PERMISSION_DENIED);
+            }
+        }
+
+        return true;
     }
 }
