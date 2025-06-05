@@ -59,11 +59,17 @@ public class UserController {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<String> upload(@RequestParam("file") MultipartFile file,
                                       @RequestAttribute("userId") Long id) throws IOException {
-        //TODO 更新头像 api 需要了解如何上传文件.
         String msg = userService.storeFile(id, file);
         if (msg.equals("上传失败")){
             return ApiResponse.error(500, msg);
         }
         return ApiResponse.success(msg);
+    }
+
+    @Operation(summary = "登出", description = "退出登录, 删除 cookie")
+    @DeleteMapping("/logout")
+    public ApiResponse<String> logout(HttpServletResponse response) {
+        CookieUtil.deleteCookie(response);
+        return ApiResponse.success("退出登录成功");
     }
 }

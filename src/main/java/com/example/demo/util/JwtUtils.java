@@ -24,12 +24,6 @@ public class JwtUtils {
 
     // 生成 Token
     public String generateToken(Long userId, Integer role) {
-//        return Jwts.builder().claim("userId", userId)                 // 用户标识（推荐用唯一ID）
-//                .issuedAt(new Date())               // 签发时间
-//                .expiration(new Date(System.currentTimeMillis() + expirationSeconds * 1000)) // 过期时间
-//                .signWith(getSecretKey())           // 密钥签名
-//                .compact();
-
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", userId);
         claims.put("role", role); // 添加角色信息
