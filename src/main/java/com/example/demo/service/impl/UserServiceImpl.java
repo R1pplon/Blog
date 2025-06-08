@@ -76,6 +76,7 @@ public class UserServiceImpl implements UserService {
         return  UserResponse.builder()
                 .id(user.getId())
                 .username(user.getUsername())
+                .email(user.getEmail())
                 .avatarUrl(user.getAvatarUrl())
                 .build();
     }
@@ -136,13 +137,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponse> getAllUser() {
         List<User> users = userRepository.findAll();
-        List<UserResponse> usersResponses = users.stream()
+        return users.stream()
                 .map(user -> new UserResponse(
                         user.getId(),
                         user.getUsername(),
+                        user.getEmail(),
                         user.getAvatarUrl()))
                 .toList();
-        return usersResponses;
     }
 
     @Override

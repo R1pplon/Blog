@@ -32,8 +32,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PublicController {
     private final UserService userService;
-     private final ArticleService articeleService;
-     private final CommentService commentService;
+    private final ArticleService articeleService;
+    private final CommentService commentService;
     private final JwtUtils jwtUtils;
     private final UserRepository userRepository;
     private final ArticleService articleService;
@@ -42,8 +42,7 @@ public class PublicController {
     /**
      * 用户注册
      */
-    @Operation(summary = "注册",
-            description = "输入用户名密码和邮箱，进行注册")
+    @Operation(summary = "注册", description = "输入用户名密码和邮箱，进行注册")
     @PostMapping("/register")
     public ApiResponse<String> register(@Valid @RequestBody RegisterRequest request) {
         userService.register(request);
@@ -51,16 +50,16 @@ public class PublicController {
     }
 
     /**
-     *  用户登录
+     * 用户登录
+     * 
      * @param request
      * @param response
      * @return
      */
-    @Operation(summary = "登录",
-            description = "传入用户名和密码, 如果登陆成功就返回一个 cookie 给前端. 这个 cookie 的值就是 jwt_toke.")
+    @Operation(summary = "登录", description = "传入用户名和密码, 如果登陆成功就返回一个 cookie 给前端. 这个 cookie 的值就是 jwt_toke.")
     @PostMapping("/login")
     public ApiResponse<UserResponse> login(@Valid @RequestBody LoginRequest request,
-                                           HttpServletResponse response) {
+            HttpServletResponse response) {
         UserResponse userResponse = userService.login(request);
         User user = userRepository.findByUsername(request.username());
         String token = jwtUtils.generateToken(user.getId(), user.getRole());
@@ -72,37 +71,34 @@ public class PublicController {
     /**
      * 获取文章详情
      */
-    @Operation(summary = "获取文章详情",
-    description = "传入文章 id, 返回文章详情")
+    @Operation(summary = "获取文章详情", description = "传入文章 id, 返回文章详情")
     @GetMapping("/article/{ArticleId}")
     public ApiResponse<ArticleResponse> getArticleDetail(@PathVariable Long ArticleId) {
         ArticleResponse articleResponse = articeleService.getArticleById(ArticleId);
         return ApiResponse.success(articleResponse);
     }
 
-     /**
+    /**
      * 获取文章列表
      */
-     @Operation(summary = "获取文章列表",
-     description =  "传入页码和页面大小, 返回文章列表")
-     @GetMapping("/article")
-     public ApiResponse<ArticleListResponse> getArticleList(
-             @RequestParam(name = "page", defaultValue = "1") Integer page,
-             @RequestParam(name = "size", defaultValue = "10") Integer size){
-         page = page-1;
+    @Operation(summary = "获取文章列表", description = "传入页码和页面大小, 返回文章列表")
+    @GetMapping("/article")
+    public ApiResponse<ArticleListResponse> getArticleList(
+            @RequestParam(name = "page", defaultValue = "1") Integer page,
+            @RequestParam(name = "size", defaultValue = "10") Integer size) {
+        page = page - 1;
 
-         ArticleListResponse response = articleService.getArticleList(page, size);
-         return ApiResponse.success(response);
-     }
+        ArticleListResponse response = articleService.getArticleList(page, size);
+        return ApiResponse.success(response);
+    }
 
     /**
      * 根据文章id 获取评论列表
      */
-     @Operation(summary = "获取评论列表",
-     description =  "传入文章id, 返回评论列表")
-     @GetMapping("/article/{articleId}/comments")
-      public ApiResponse<List<CommentDTO>> getCommentsByArticleId(@PathVariable Long articleId) {
-         List<CommentDTO> comments = commentService.getCommentsByArticleId(articleId);
-         return  ApiResponse.success(comments);
-     }
+    @Operation(summary = "获取评论列表", description = "传入文章id, 返回评论列表")
+    @GetMapping("/article/{articleId}/comments")
+    public ApiResponse<List<CommentDTO>> getCommentsByArticleId(@PathVariable Long articleId) {
+        List<CommentDTO> comments = commentService.getCommentsByArticleId(articleId);
+        return ApiResponse.success(comments);
+    }
 }

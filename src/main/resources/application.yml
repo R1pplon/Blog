@@ -17,6 +17,11 @@ spring:
   thymeleaf:
     cache: false # 开发时关闭缓存
     mode: HTML
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 30MB
 
 server:
   port: 8080
@@ -34,3 +39,10 @@ jwt:
 file:
   upload-dir: ${user.home}/Pictures/Bolg_BackEnd
   access-path: /images/**
+
+
+# CORS配置
+cors:
+  allowed-origins: http://localhost:5173
+  # 生产环境可以改为实际的域名
+  # allowed-origins: https://your-production-domain.com

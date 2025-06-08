@@ -19,21 +19,24 @@ public class WebMVCConfig implements WebMvcConfigurer {
     private String uploadDir;
     @Value("${file.access-path}")
     private String accessPath;
+    @Value("${cors.allowed-origins}")
+    private String allowedOrigins;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry
                 .addMapping("/**") // 匹配所有路径
-                .allowedOrigins("*") // 允许所有来源
+                .allowedOrigins(allowedOrigins) // 使用配置文件中的值
                 .allowedMethods("*") // 允许所有HTTP方法
                 .allowedHeaders("*") // 允许所有请求头
-                .allowCredentials(false);
+                .allowCredentials(true) // 允许携带凭证
+                .maxAge(3600L); // 预检请求的有效期，单位秒
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
-                .addPathPatterns("/**")               // 拦截所有路径
+                .addPathPatterns("/**") // 拦截所有路径
                 .excludePathPatterns(
                         "/auth/**",
                         "/static/**",
@@ -42,8 +45,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
                         "/swagger-resources/**",
                         "/webjars/**",
                         "/api/public/**",
-                        "/images/**"
-                );
+                        "/images/**");
     }
 
     @Override

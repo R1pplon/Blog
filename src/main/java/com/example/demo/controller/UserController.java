@@ -36,6 +36,7 @@ public class UserController {
         return ApiResponse.success(UserResponse.builder()
                 .id(id)
                 .username(user.getUsername())
+                .email(user.getEmail())
                 .avatarUrl(user.getAvatarUrl())
                 .build());
     }
@@ -59,7 +60,6 @@ public class UserController {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse<String> upload(@RequestParam("file") MultipartFile file,
                                       @RequestAttribute("userId") Long id) throws IOException {
-        //TODO 更新头像 api 需要了解如何上传文件.
         String msg = userService.storeFile(id, file);
         if (msg.equals("上传失败")){
             return ApiResponse.error(500, msg);
