@@ -76,4 +76,11 @@ public class UserController {
         }
         return ApiResponse.success(msg);
     }
+
+    @Operation(summary = "登出", description = "退出登录, 删除 cookie")
+    @DeleteMapping("/logout")
+    public ApiResponse<String> logout(HttpServletResponse response) {
+        CookieUtil.deleteCookie(response);
+        return ApiResponse.success("退出登录成功");
+    }
 }
