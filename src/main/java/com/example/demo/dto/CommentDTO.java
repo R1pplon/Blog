@@ -7,6 +7,7 @@ public record CommentDTO (
         String username,
         String avatarUrl,
         String articleTitle,
+        Long  articleId,
         String content,
         LocalDateTime createTime,
         Long parentId

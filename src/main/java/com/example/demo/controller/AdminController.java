@@ -17,7 +17,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Tag(name = "管理员相关Api", description = "用于管理")
@@ -66,6 +68,17 @@ public class AdminController {
         articleService.createArticle(createArticleRequest,userId);
         return ApiResponse.success("管理员创建文章成功");
      }
+
+     @Operation(summary = "通过文件上传文章", description = "上传文件来创建文章")
+     @PostMapping("/articles/upload")
+     public ApiResponse<String> upload(@RequestParam("file") MultipartFile file,
+                                      @RequestAttribute("userId") Long userId) throws IOException {
+        String msg = articleService.storeFile(userId, file);
+        if (msg.equals("上传失败")){
+            return ApiResponse.error(500, msg);
+        }
+        return ApiResponse.success(msg);
+    }
 
       @Operation(summary = "删除文章", description = "只有管理员才能删除文章")
        @DeleteMapping("/article/{articleId}")

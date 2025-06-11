@@ -5,6 +5,7 @@ import com.example.demo.dto.request.CreateArticleRequest;
 import com.example.demo.dto.response.ArticleListResponse;
 import com.example.demo.dto.response.ArticleResponse;
 import jakarta.validation.Valid;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface ArticleService {
 
@@ -19,4 +20,6 @@ public interface ArticleService {
     void deleteArticleById(Long articleId);
 
     void updateArticle(@Valid UpdateArticleRequest updateArticleRequest, Long articleId);
+
+    String storeFile(Long userId, MultipartFile file);
 }

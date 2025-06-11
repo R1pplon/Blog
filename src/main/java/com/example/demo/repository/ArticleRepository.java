@@ -12,4 +12,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     Page<Article> findAllByOrderByCreateTimeDesc(Pageable pageable);
 
     Article findByTitle(String title);
+
+    Integer countBy();
 }

@@ -13,11 +13,14 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.service.ArticleService;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -59,7 +62,9 @@ public class ArticleServiceImpl implements ArticleService {
                 ))
                 .toList();
 
-        return new ArticleListResponse(articleDTOs);
+        Integer total = articleRepository.countBy();
+
+        return new ArticleListResponse(total,articleDTOs);
     }
 
     @Override
@@ -93,5 +98,21 @@ public class ArticleServiceImpl implements ArticleService {
 
         article.setUpdateTime(LocalDateTime.now());
         articleRepository.save(article);
+    }
+
+    @Override
+    public String storeFile(Long userId, MultipartFile file) {
+        // 读取文件文本，创建文章
+        try {
+            // 标题title为文件名
+//            String title = file.getOriginalFilename().split("\\.")[0];
+            String title = FilenameUtils.getBaseName(file.getOriginalFilename());
+            // 文件文本为文章内容content
+            String content = new String(file.getBytes());
+            createArticle(new CreateArticleRequest(title, content), userId);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return "";
     }
 }

@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.request.LoginRequest;
 import com.example.demo.dto.request.RegisterRequest;
 import com.example.demo.dto.response.UserResponse;
+import com.example.demo.dto.response.UserRoleResponse;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
@@ -38,6 +39,15 @@ public class UserController {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .avatarUrl(user.getAvatarUrl())
+                .build());
+    }
+
+    @Operation(summary = "获取用户权限信息", description = "获取用户权限role属性，0为管理员，1为普通用户")
+    @GetMapping("/getRole")
+    public ApiResponse<UserRoleResponse> getRole(@RequestAttribute("userId") Long id) {
+        User user = userRepository.findById(id).orElseThrow();
+        return ApiResponse.success(UserRoleResponse.builder()
+                        .role(user.getRole())
                 .build());
     }
 
